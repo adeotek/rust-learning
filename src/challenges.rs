@@ -1,5 +1,7 @@
 use std::io;
 use rand::prelude::*;
+use std::env;
+use std::fs;
 
 pub fn challenge_1() {
     println!("----------------Challenge 1----------------");
@@ -144,4 +146,38 @@ pub fn challenge_5() {
         }
     }
     println! ("Challenge 5 ended!");
+}
+
+pub fn challenge_6() {
+    println!("----------------Challenge 6----------------");
+
+    println! ("{} arguments provided", env::args().len());
+    if env::args().len() < 2 {
+        println! ("Invalid number of arguments!");
+        return;
+    }
+
+    let file_path = env::args().nth(env::args().len()-2).unwrap();
+    println! ("File: {}", file_path);
+    let target_name = env::args().nth(env::args().len()-1).unwrap();
+    println! ("Name: {}", target_name);
+
+    let file_content = fs::read_to_string(&file_path).unwrap();
+    // println! ("File content: \n{}", file_content);
+
+    let mut found = String::new();
+    for line in file_content.lines() {
+        if line.trim().to_uppercase() == target_name.trim().to_uppercase() {
+            found = String::from(line.trim());
+            break;
+        }
+    }
+
+    if found.len() > 0 {
+        println! ("The name {} is present in the file {}!", found, file_path);
+    } else {
+        println! ("The name {} was not found in the file {}!", target_name.trim(), file_path);
+    }
+
+    println! ("Challenge 6 ended!");
 }
